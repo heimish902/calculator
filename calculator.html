@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+  </head>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      display: grid;
+      height: 100vh;
+      place-items: center;
+      font-family: 'Montserrat';
+      background-color: #dde1e7;
+    }
+    .container {
+      width: 320px;
+      height: 550px;
+      padding: 35px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 0.5em;
+      box-shadow: -3px -3px 7px #ffffff73, 2px 2px 5px rgba(94, 104, 121, 0.288);
+    }
+    .result {
+      width: 100%;
+      height: 130px;
+      box-shadow: inset 2px 2px 5px #babecc, inset -5px -5px 10px #ffffff73;
+    }
+    .result p {
+      margin-right: 15px;
+      font-size: 40px;
+      text-align: right;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1em;
+    }
+    button {
+      display: grid;
+      place-content: center;
+      width: 50px;
+      height: 50px;
+      font-family: 'Montserrat';
+      font-size: 18px;
+      text-align: center;
+      border-radius: 100%;
+      border: none;
+      box-shadow: 2px 2px 5px #babecc, -5px -5px 10px #ffffff73;
+      background-color: transparent;
+      cursor: pointer;
+    }
+    .zero {
+      grid-column: 1/ 3;
+      width: 100%;
+      border-radius: 50px;
+    }
+    button.operator {
+      color: #ed11a4;
+      font-size: 20px;
+      font-weight: 600;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="result">
+        <p class="result_cont">0</p>
+      </div>
+      <div class="buttons">
+        <button class="ac" data-type="ac">AC</button>
+        <button>(</button>
+        <button>)</button>
+        <button class="operator" data-type="operator">/</button>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button class="operator" data-type="operator">*</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button class="operator" data-type="operator">-</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button class="operator" data-type="operator">+</button>
+        <button class="zero">0</button>
+        <button>.</button>
+        <button class="operator equal" data-type="equal">=</button>
+      </div>
+    </div>
+
+    <script>
+      const operator = document.querySelectorAll('.operator');
+      const buttons = document.querySelectorAll('button');
+      const result = document.querySelector('.result_cont');
+      const clear = document.querySelector('.ac');
+      const total = document.querySelector('.equal');
+
+      class Calculator {
+        constructor(result) {
+          this.result = result;
+          this.clear();
+        }
+        clear() {
+          this.resultContent = '';
+          this.result.innerText = 0;
+        }
+        appendNumber(number) {
+          this.resultContent += number;
+        }
+        appendOperator(operator) {
+          this.resultContent += operator;
+        }
+        updateResult() {
+          this.result.innerText = this.resultContent;
+        }
+        sumNumber() {
+          this.resultContent = eval(this.resultContent);
+        }
+      }
+
+      const calculator = new Calculator(result);
+      // let btns = [...buttons];
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          switch (button.dataset.type) {
+            case 'operator':
+              calculator.appendOperator(button.innerText);
+              calculator.updateResult();
+              break;
+            case 'ac':
+              calculator.clear();
+              break;
+            case 'equal':
+              calculator.sumNumber();
+              calculator.updateResult();
+              break;
+            default:
+              calculator.appendNumber(button.innerText);
+              calculator.updateResult();
+              break;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
