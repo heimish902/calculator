@@ -106,37 +106,29 @@
       class Calculator {
         constructor(result) {
           this.result = result;
-          this.opearatorCheck = true; // 연산자 선택 여부 저장
-          this.equalsCheck = false;
+          this.operatorCheck = true; // 연산자 선택 여부 저장
           this.clear();
         }
         clear() {
           this.resultContent = '';
           this.result.innerText = 0;
-          this.opearatorCheck = true;
+          this.operatorCheck = true;
         }
         appendNumber(number) {
-          if (this.equalsCheck) {
-            this.resultContent = number;
-            this.equalsCheck = false;
-          } else {
-            this.resultContent += number;
-          }
-          this.opearatorCheck = false;
+          this.resultContent += number;
+          this.operatorCheck = false;
         }
         appendOperator(operator) {
-          if (this.opearatorCheck) return false;
-          if (this.equalsCheck) this.equalsCheck = false;
+          if (this.operatorCheck) return false;
           this.resultContent += operator;
-          return (this.opearatorCheck = true);
+          return (this.operatorCheck = true);
         }
         updateResult() {
           this.result.innerText = this.resultContent;
         }
         sumNumber() {
-          if (this.opearatorCheck) return;
+          if (this.operatorCheck) return;
           this.resultContent = eval(this.resultContent);
-          this.equalsCheck = true;
         }
       }
 
