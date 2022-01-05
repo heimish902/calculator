@@ -106,23 +106,37 @@
       class Calculator {
         constructor(result) {
           this.result = result;
+          this.opearatorCheck = true; // 연산자 선택 여부 저장
+          this.equalsCheck = false;
           this.clear();
         }
         clear() {
           this.resultContent = '';
           this.result.innerText = 0;
+          this.opearatorCheck = true;
         }
         appendNumber(number) {
-          this.resultContent += number;
+          if (this.equalsCheck) {
+            this.resultContent = number;
+            this.equalsCheck = false;
+          } else {
+            this.resultContent += number;
+          }
+          this.opearatorCheck = false;
         }
         appendOperator(operator) {
+          if (this.opearatorCheck) return false;
+          if (this.equalsCheck) this.equalsCheck = false;
           this.resultContent += operator;
+          return (this.opearatorCheck = true);
         }
         updateResult() {
           this.result.innerText = this.resultContent;
         }
         sumNumber() {
+          if (this.opearatorCheck) return;
           this.resultContent = eval(this.resultContent);
+          this.equalsCheck = true;
         }
       }
 
@@ -133,8 +147,9 @@
         button.addEventListener('click', () => {
           switch (button.dataset.type) {
             case 'operator':
-              calculator.appendOperator(button.innerText);
-              calculator.updateResult();
+              if (calculator.appendOperator(button.innerText)) {
+                calculator.updateResult();
+              }
               break;
             case 'ac':
               calculator.clear();
